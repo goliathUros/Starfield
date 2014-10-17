@@ -49,10 +49,10 @@ class NormalParticle implements Particle
 
     if (xpos > width || ypos > height || xpos < 0 || ypos < 0) 
     {
-      xpos = width/2;
-      ypos = height/2;
+      xpos = width/2.00;
+      ypos = height/2.00;
       speed = speed + 0.02;
-      partSize = partSize - 1;
+      partSize = partSize + 1;
     }
   }
 }
