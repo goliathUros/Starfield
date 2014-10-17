@@ -3,7 +3,7 @@ Particle[] test = new Particle[100];
 void setup()
 {
   background(0);
-  size(400,400);
+  size(500,500);
   for (int i = 0; i < test.length; i++)
   {
     test[i] = new NormalParticle();
@@ -19,6 +19,8 @@ void draw()
     test[i].move();
     test[i].show();
   }
+  test[1].show();
+  test[1].move();
 }
 
 class NormalParticle implements Particle
@@ -47,12 +49,16 @@ class NormalParticle implements Particle
     fill(partFill);
     ellipse((float)xpos, (float)ypos, (float)partSize, (float)partSize);
 
-    if (xpos > width || ypos > height || xpos < 0 || ypos < 0) 
+    while (xpos > width || ypos > height || xpos < 0 || ypos < 0) 
     {
       xpos = width/2.00;
       ypos = height/2.00;
       speed = speed + 0.02;
-      partSize = partSize + 1;
+      if (mousePressed) {
+        partSize = partSize - 0.75;
+      } else {
+        partSize = partSize + 0.75;
+      }
     }
   }
 }
@@ -69,8 +75,8 @@ class OddballParticle implements Particle
   color partFill;
   OddballParticle() 
   {
-    xpos = width/2;
-    ypos = height/2;
+    xpos = width/2.00;
+    ypos = height/2.00;
     speed = (Math.random()*3) + 2;
     angle = (Math.random()*2*Math.PI);
     partFill = color(255, 0, 0);
@@ -78,28 +84,20 @@ class OddballParticle implements Particle
 
   public void move() 
   {
-    xpos = xpos++;
-    ypos = ypos++;
-
-    //xpos = xpos + (speed*Math.cos(angle)-4);
-    //ypos = ypos + (speed*Math.sin(angle)-4);
+    xpos = xpos + (speed*Math.cos(angle)-3);
+    ypos = ypos + (speed*Math.sin(angle)-3);
   }
 
   public void show() 
   {
     noStroke();
     fill(partFill);
-    ellipse(200, 200, 20,20);
+    ellipse(mouseX, mouseY, 20,20);
 
-    /*if (xpos > width - 10 || ypos > height - 10)
-    {
-      xpos = xpos - (speed*Math.cos(angle)-4);
-      ypos = ypos - (speed*Math.sin(angle)-4);
-    } 
-    else if (xpos < 0 || ypos < 0)
-    {
-      xpos = xpos + (speed*Math.cos(angle)-4);
-      ypos = ypos + (speed*Math.sin(angle)-4);
+    /*ellipse((float)xpos, (float)ypos, 25.0, 25.0);
+    if (xpos > 490 || ypos > 490) {
+      xpos = xpos - (speed*Math.cos(angle)+3);
+      ypos = ypos - (speed*Math.sin(angle)+3);
     }*/
   }
 }
