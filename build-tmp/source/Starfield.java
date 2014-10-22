@@ -24,6 +24,7 @@ public void setup()
   {
     test[i] = new NormalParticle();
     test[1] = new OddballParticle();
+    test[2] = new JumboParticle();
   }
 }
 
@@ -37,6 +38,8 @@ public void draw()
   }
   test[1].show();
   test[1].move();
+  test[2].show();
+  test[2].move();
 }
 
 class NormalParticle implements Particle
@@ -55,8 +58,8 @@ class NormalParticle implements Particle
 
   public void move() 
   {
-    xpos = xpos + (speed*Math.cos(angle));
-    ypos = ypos + (speed*Math.sin(angle));
+    xpos += (speed*Math.cos(angle));
+    ypos += (speed*Math.sin(angle));
   }
 
   public void show() 
@@ -94,31 +97,54 @@ class OddballParticle implements Particle
     xpos = width/2.00f;
     ypos = height/2.00f;
     speed = (Math.random()*3) + 2;
-    angle = (Math.random()*2*Math.PI);
-    partFill = color(255, 0, 0);
+    angle = Math.random()*2*Math.PI;
   }
 
   public void move() 
   {
-    xpos = xpos + (speed*Math.cos(angle)-3);
-    ypos = ypos + (speed*Math.sin(angle)-3);
+    xpos += speed;
+    ypos += (speed*Math.sin(angle)-0.1f);
+    
+    if (xpos < 0 || ypos < 0 || xpos > width || ypos > height) 
+    {
+      xpos = 0;
+      ypos = (int)(Math.random()*501.0f);
+    }
   }
 
   public void show() 
   {
-    noStroke();
-    fill(0);
-    ellipse((float)xpos, (float)ypos, 26.5f, 26.5f);
-    fill(partFill);
-    ellipse(mouseX, mouseY, 20,20);
-
-    /*ellipse((float)xpos, (float)ypos, 25.0, 25.0);
-    if (xpos > 490 || ypos > 490) {
-      xpos = xpos - (speed*Math.cos(angle)+3);
-      ypos = ypos - (speed*Math.sin(angle)+3);
-    }*/
+    stroke(0);
+    fill(255, 240, 10);
+    ellipse((float)xpos, (float)ypos, 20, 20);
   }
 }
+
+class JumboParticle extends NormalParticle
+{
+  float partSize;
+  int jumboFill;
+  JumboParticle() 
+  {
+    partSize = 30;
+    jumboFill = color(200);
+  }
+  public void show() 
+  {
+    noStroke();
+    fill(jumboFill);
+    ellipse((float)xpos, (float)ypos, partSize, partSize);
+    ellipse((float)xpos, (float)ypos, (partSize/2)*3, partSize/3);
+
+    if (xpos < 0 || ypos < 0 || xpos > width || ypos > height)
+    {
+      xpos = width/2;
+      ypos = height/2;
+    }
+  }
+}
+
+
 
 
   static public void main(String[] passedArgs) {
